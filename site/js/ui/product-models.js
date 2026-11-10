@@ -93,13 +93,19 @@
     lathe(mesh, [[rimY - 0.015, rimRadius * 0.68], [rimY + 0.06, rimRadius * 0.73],
       [rimY + 0.19, rimRadius * 0.86], [rimY + 0.23, rimRadius * 0.78], [rimY + 0.23, 0]], cap, { steps: 28 });
     const [width, height, y, z] = label;
+    const trimStart = mesh.length;
     roundedPlate(mesh, 0, y, width, height, z, trim);
+    const paperStart = mesh.length;
     roundedPlate(mesh, 0, y, width * 0.85, height * 0.79, z + 0.023, paper);
+    const markStart = mesh.length;
     if (emblem) {
       star(mesh, 0, y, z + 0.047, Math.min(width, height) * 0.27, color);
     } else {
       roundedPlate(mesh, 0, y + height * 0.1, width * 0.5, 0.022, z + 0.046, color);
       roundedPlate(mesh, 0, y - height * 0.1, width * 0.32, 0.018, z + 0.046, color);
+    }
+    for (let index = trimStart; index < mesh.length; index += 1) {
+      mesh[index].badgeLayer = index >= markStart ? 3 : index >= paperStart ? 2 : 1;
     }
   }
 

@@ -457,6 +457,7 @@
     const id = card.dataset.productId;
     if (button.dataset.action === "add") {
       actions.add(id);
+      Shop.productView?.cast(find(".model-stage", card));
       showToast(`«${productName(id)}» в корзине`);
     }
     if (button.dataset.action === "favorite") {
