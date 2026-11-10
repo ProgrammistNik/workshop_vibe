@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.zip
+bin/
+obj/
+*.class
+shop-server
+.idea/
+.vscode/

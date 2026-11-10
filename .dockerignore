@@ -1,0 +1,7 @@
+.git
+.github
+*.zip
+bin
+obj
+.env
+.env.*
