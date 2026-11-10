@@ -17,7 +17,7 @@
 3. Push. Баги, которые видит пользователь, — в inbox владельца (`ui` — вёрстка и `app.js`, `lead` — `core`/`store`, `backend` — API и `api.js`) с шагами воспроизведения.
 
 ## P1 — CI и smoke (20 минут)
-- `.github/workflows/check.yml`: оставить существующую матрицу smoke; добавить jobs на ubuntu: `unit` (`node --test tests/unit`), `go` (`go test ./...`), `e2e` (setup-go, setup-node с кешем npm, `npm ci`, `npx playwright install --with-deps chromium`, прогон, артефакт отчёта при падении). Job `e2e` добавь, когда `minimum.spec.js` зелёный локально на текущем `main`.
+- `.github/workflows/check.yml`: оставить существующую матрицу smoke; добавить jobs на ubuntu: `unit` (`node --test "tests/unit/*.test.js"`), `go` (`go test ./...`), `e2e` (setup-go, setup-node с кешем npm, `npm ci`, `npx playwright install --with-deps chromium`, прогон, артефакт отчёта при падении). Job `e2e` добавь, когда `minimum.spec.js` зелёный локально на текущем `main`.
 - `tests/smoke.py` — правь, только если он упал из-за новой структуры: игнорировать `node_modules`, `e2e`, `data` при копировании; не удалять существующие проверки.
 
 ## P2 — для README и демо (15 минут)

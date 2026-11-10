@@ -158,7 +158,8 @@ GitHub Pages организации делит `localStorage` между ком�
 Чистый JS без сборки и зависимостей, классические скрипты (не ES-модули — чтобы работал `file://`). Единственный глобал — `window.Shop`. Порядок подключения в `site/index.html` строго такой:
 
 ```html
-<script defer src="./js/config.js"></script>
+<script src="./js/config.js"></script>
+<script src="./js/ui/theme.js"></script>
 <script defer src="./js/catalog.js"></script>
 <script defer src="./js/core.js"></script>
 <script defer src="./js/store.js"></script>
@@ -166,7 +167,7 @@ GitHub Pages организации делит `localStorage` между ком�
 <script defer src="./app.js"></script>
 ```
 
-Свои файлы `./js/ui/*.js` роль `ui` подключает между `api.js` и `app.js`.
+`config.js` и `ui/theme.js` подключаются в `<head>` без `defer`, чтобы тема применялась до первой отрисовки. Остальные свои файлы `./js/ui/*.js` роль `ui` подключает между `api.js` и `app.js`.
 
 ### 4.1 `Shop.config` (`site/js/config.js`, lead)
 Замороженный объект: `storageKeys { cart, favorites, promo, theme }`, `promoCodes { ALCHEMY10: 10 }`, `maxQuantity: 99`, `apiBase: "./api"`, `apiTimeoutMs: 1500`, `searchDebounceMs: 200`.
@@ -391,7 +392,7 @@ E2E-тесты используют только эти `data-testid` (плюс 
 | `go run .` | сервер сайта + API на http://localhost:8000 |
 | `go run . --pack` | `shop.zip` из `site/` |
 | `go run . --reset-db` | пересоздать базу |
-| `node --test tests/unit` | unit-тесты core/store |
+| `node --test "tests/unit/*.test.js"` | unit-тесты core/store |
 | `go test ./...` | тесты backend |
 | `python3 tests/smoke.py` | smoke шаблона (сервер, MIME, ZIP, изоляция исходников) |
 | `cd e2e && npm ci && npx playwright test` | e2e |
