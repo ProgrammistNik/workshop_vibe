@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ступка и колба — лавка алхимика</title>
   <meta name="description" content="Учебный магазин алхимика: ингредиенты, зелья, свитки и артефакты. Корзина, промокод, избранное и заказ.">
-  <meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#18201d" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fff0de" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#170e28" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Ступка и колба — лавка алхимика">
   <meta property="og:description" content="Ингредиенты, зелья, свитки и артефакты для домашней алхимии.">
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=ember">
   <script src="./js/config.js"></script>
   <script src="./js/ui/theme.js"></script>
   <script defer src="./js/catalog.js"></script>
@@ -18,11 +18,15 @@
   <script defer src="./js/store.js"></script>
   <script defer src="./js/api.js"></script>
   <script defer src="./js/ui/product-models.js"></script>
-  <script defer src="./js/ui/product-view.js"></script>
+  <script defer src="./js/ui/product-view.js?v=ember"></script>
   <script defer src="./js/ui/familiars.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
+  <div class="ambient-world" aria-hidden="true">
+    <span class="ambient-motes"></span>
+    <span class="ambient-motes ambient-motes-far"></span>
+  </div>
   <a class="skip-link" href="#main">К содержимому</a>
 
   <header class="masthead">
@@ -46,33 +50,46 @@
 
   <main id="main" tabindex="-1">
     <div id="storefront">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="hero-kicker">Лавка алхимика</p>
-          <h1 class="hero-title" id="hero-title">Ступка<br>и колба</h1>
-          <p class="hero-lead">Редкие ингредиенты, зелья, свитки и артефакты для домашней алхимии.</p>
-          <div class="hero-actions">
-            <a class="button button-primary hero-link" href="#catalog-heading">Смотреть коллекцию <span aria-hidden="true">↘</span></a>
-            <a class="familiar-link" href="#familiars">Познакомиться с фамильярами</a>
+      <div class="hero-band">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="hero-kicker">Ночная лавка алхимика</p>
+            <h1 class="hero-title" id="hero-title">Ступка<br><span>и колба</span></h1>
+            <p class="hero-lead">Редкие ингредиенты, зелья, свитки и артефакты для домашней алхимии.</p>
+            <div class="hero-actions">
+              <a class="button button-primary hero-link" href="#catalog-heading">Смотреть коллекцию <span aria-hidden="true">↘</span></a>
+              <a class="familiar-link" href="#familiars">Познакомиться с фамильярами</a>
+            </div>
           </div>
-        </div>
-        <figure class="hero-shelf">
-          <div class="hero-stage model-stage" data-hero-model="healing-potion" data-model-name="Зелье исцеления">
-            <span class="hero-orbit" aria-hidden="true"></span>
-            <span class="hero-stardust" aria-hidden="true"></span>
-            <img class="hero-familiar hero-phoenix" src="./assets/familiars/phoenix.svg" alt="" width="320" height="250">
-            <img class="hero-familiar hero-dragon" src="./assets/familiars/moon-dragon.svg" alt="" width="320" height="250">
-            <img class="hero-image" src="./assets/products/healing-potion.svg" width="160" height="160" alt="Зелье исцеления">
-            <span class="hero-index" aria-hidden="true">ЭКЗЕМПЛЯР 04</span>
-            <button class="model-spell" type="button" data-model-spell><span aria-hidden="true">✦</span> Оживить</button>
-            <span class="model-note" aria-hidden="true">↔ Вращайте модель</span>
-          </div>
-          <figcaption class="hero-caption">
-            <span>Зелье исцеления</span>
-            <span>Коллекция лавки</span>
-          </figcaption>
-        </figure>
-      </section>
+          <figure class="hero-shelf">
+            <div class="hero-stage model-stage" data-element="fire" data-hero-model="healing-potion" data-model-name="Зелье исцеления">
+              <span class="hero-orbit" aria-hidden="true"></span>
+              <svg class="hero-sigil" viewBox="0 0 320 320" fill="none" aria-hidden="true">
+                <circle cx="160" cy="160" r="139" stroke-dasharray="1 9"/>
+                <path d="M160 32 271 224H49L160 32ZM160 288 49 96h222L160 288Z"/>
+                <path d="M160 8v30m0 244v30M8 160h30m244 0h30M54 54l18 18m176 176 18 18M266 54l-18 18M72 248l-18 18"/>
+                <circle cx="160" cy="160" r="6"/><circle cx="160" cy="160" r="17" stroke-dasharray="2 5"/>
+              </svg>
+              <span class="hero-stardust" aria-hidden="true"></span>
+              <img class="hero-familiar hero-phoenix" src="./assets/familiars/phoenix.svg" alt="" width="320" height="250">
+              <img class="hero-familiar hero-dragon" src="./assets/familiars/moon-dragon.svg" alt="" width="320" height="250">
+              <img class="hero-image" src="./assets/products/healing-potion.svg" width="160" height="160" alt="Зелье исцеления">
+              <span class="hero-index" data-hero-index aria-hidden="true">ЭКЗЕМПЛЯР 04</span>
+              <button class="model-spell" type="button" data-model-spell><span aria-hidden="true">✦</span> Оживить</button>
+              <span class="model-note" aria-hidden="true">↔ Вращайте модель</span>
+            </div>
+            <figcaption class="hero-caption">
+              <span data-hero-caption aria-live="polite">Зелье исцеления</span>
+              <span>Алхимический круг</span>
+              <div class="hero-elements" role="group" aria-label="Печати алхимического круга">
+                <button class="hero-seal" type="button" data-seal="fire" aria-pressed="true"><span aria-hidden="true">✦</span> Огонь</button>
+                <button class="hero-seal" type="button" data-seal="moon" aria-pressed="false"><span aria-hidden="true">☾</span> Луна</button>
+                <button class="hero-seal" type="button" data-seal="wild" aria-pressed="false"><span aria-hidden="true">✧</span> Лес</button>
+              </div>
+            </figcaption>
+          </figure>
+        </section>
+      </div>
 
       <section class="shop layout" aria-labelledby="catalog-heading">
         <div class="shop-head">
