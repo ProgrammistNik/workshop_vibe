@@ -14,6 +14,11 @@
     scrolls: { color: "#ff729d", shine: "#ffcf78", motion: "tilt" },
     artifacts: { color: "#ad8cff", shine: "#d9eeff", motion: "orbit" }
   };
+  const seals = {
+    fire: { id: "healing-potion", spell: { color: "#ffab50", shine: "#ffe993", motion: "spin" } },
+    moon: { id: "night-vision-elixir", spell: spells.artifacts },
+    wild: { id: "luck-tonic", spell: { color: "#b1ff72", shine: "#e7ffae", motion: "rise" } }
+  };
 
   function prepareFace({ points, color, badgeLayer = 0 }) {
     const [nx, ny, nz] = points.reduce(([x, y, z], current, index) => {
@@ -177,6 +182,7 @@
 
   function clearSpell(view) {
     view.spellStarted = null;
+    view.pendingSpell = false;
     delete view.stage.dataset.casting;
   }
 
@@ -200,7 +206,11 @@
 
   function cast(stage) {
     const view = views.get(stage);
-    if (!view?.ctx || reducedMotion.matches) return;
+    if (!view || reducedMotion.matches) return;
+    if (!view.ctx) {
+      view.pendingSpell = true;
+      return;
+    }
     view.spellStarted = window.performance.now();
     stage.dataset.casting = view.spell.motion;
     requestDraw(view);
@@ -216,29 +226,37 @@
     clearSpell(view);
   }
 
+  function facesFor(id) {
+    if (!modelCache.has(id)) modelCache.set(id, shop.productModels[id]().map(prepareFace));
+    return modelCache.get(id);
+  }
+
+  function updateModelLabels(view) {
+    view.canvas?.setAttribute("aria-label", `${view.name}. 3D-модель. Вращайте стрелками, Home возвращает исходный ракурс.`);
+    view.stage.querySelector("[data-model-spell]")?.setAttribute("aria-label", `Оживить модель: ${view.name}`);
+  }
+
   const resize = typeof ResizeObserver === "function" ? new ResizeObserver((entries) => {
     for (const { target } of entries) requestDraw(views.get(target));
   }) : null;
 
   function activate(view) {
-    const { stage, id, name } = view;
+    const { stage, id } = view;
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    if (!modelCache.has(id)) modelCache.set(id, shop.productModels[id]().map(prepareFace));
     const category = stage.closest("[data-category]")?.dataset.category;
     Object.assign(view, {
-      canvas, ctx, faces: modelCache.get(id), yaw: initialYaw, pitch: initialPitch,
-      frame: 0, lastPaint: -Infinity, spell: spells[category] ?? spells.potions, spellStarted: null
+      canvas, ctx, faces: facesFor(id), yaw: initialYaw, pitch: initialPitch,
+      frame: 0, lastPaint: -Infinity, spell: view.spell ?? spells[category] ?? spells.potions, spellStarted: null
     });
     canvas.className = "model-canvas";
     canvas.tabIndex = 0;
     canvas.setAttribute("role", "img");
-    canvas.setAttribute("aria-label", `${name}. 3D-модель. Вращайте стрелками, Home возвращает исходный ракурс.`);
+    updateModelLabels(view);
     stage.prepend(canvas);
     const spellButton = stage.querySelector("[data-model-spell]");
-    spellButton?.setAttribute("aria-label", `Оживить модель: ${name}`);
     spellButton?.addEventListener("click", () => cast(stage));
 
     let drag = null;
@@ -275,6 +293,10 @@
 
     if (resize) resize.observe(stage);
     else window.addEventListener("resize", () => requestDraw(view));
+    if (view.pendingSpell) {
+      view.pendingSpell = false;
+      cast(stage);
+    }
     requestDraw(view);
   }
 
@@ -300,8 +322,36 @@
   const hero = document.querySelector("[data-hero-model]");
   if (hero) {
     mount(hero, hero.dataset.heroModel, hero.dataset.modelName);
+    const view = views.get(hero);
+    const buttons = document.querySelectorAll("[data-seal]");
+    const image = hero.querySelector(".hero-image");
+    const index = hero.querySelector("[data-hero-index]");
+    const caption = document.querySelector("[data-hero-caption]");
+    view.spell = seals.fire.spell;
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        const element = button.dataset.seal;
+        const { id, spell } = seals[element];
+        const position = shop.catalog.products.findIndex((product) => product.id === id);
+        const product = shop.catalog.products[position];
+        hero.dataset.element = element;
+        hero.dataset.heroModel = id;
+        buttons.forEach((choice) => choice.setAttribute("aria-pressed", String(choice === button)));
+        caption.textContent = product.name;
+        index.textContent = `ЭКЗЕМПЛЯР ${String(position + 1).padStart(2, "0")}`;
+        image.src = `./${product.image}`;
+        image.alt = product.name;
+        Object.assign(view, { id, name: product.name, spell, yaw: initialYaw, pitch: initialPitch, manual: false });
+        if (view.ctx) view.faces = facesFor(id);
+        clearSpell(view);
+        updateModelLabels(view);
+        cast(hero);
+        if (view.ctx) requestDraw(view);
+      });
+    }
+
     reducedMotion.addEventListener("change", () => {
-      const view = views.get(hero);
       if (view?.ctx) requestDraw(view);
     });
   }
