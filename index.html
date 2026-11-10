@@ -19,6 +19,7 @@
   <script defer src="./js/api.js"></script>
   <script defer src="./js/ui/product-models.js"></script>
   <script defer src="./js/ui/product-view.js"></script>
+  <script defer src="./js/ui/familiars.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -50,13 +51,20 @@
           <p class="hero-kicker">Лавка алхимика</p>
           <h1 class="hero-title" id="hero-title">Ступка<br>и колба</h1>
           <p class="hero-lead">Редкие ингредиенты, зелья, свитки и артефакты для домашней алхимии.</p>
-          <a class="button button-primary hero-link" href="#catalog-heading">Смотреть коллекцию <span aria-hidden="true">↘</span></a>
+          <div class="hero-actions">
+            <a class="button button-primary hero-link" href="#catalog-heading">Смотреть коллекцию <span aria-hidden="true">↘</span></a>
+            <a class="familiar-link" href="#familiars">Познакомиться с фамильярами</a>
+          </div>
         </div>
         <figure class="hero-shelf">
           <div class="hero-stage model-stage" data-hero-model="healing-potion" data-model-name="Зелье исцеления">
             <span class="hero-orbit" aria-hidden="true"></span>
+            <span class="hero-stardust" aria-hidden="true"></span>
+            <img class="hero-familiar hero-phoenix" src="./assets/familiars/phoenix.svg" alt="" width="320" height="250">
+            <img class="hero-familiar hero-dragon" src="./assets/familiars/moon-dragon.svg" alt="" width="320" height="250">
             <img class="hero-image" src="./assets/products/healing-potion.svg" width="160" height="160" alt="Зелье исцеления">
             <span class="hero-index" aria-hidden="true">ЭКЗЕМПЛЯР 04</span>
+            <button class="model-spell" type="button" data-model-spell><span aria-hidden="true">✦</span> Оживить</button>
             <span class="model-note" aria-hidden="true">↔ Вращайте модель</span>
           </div>
           <figcaption class="hero-caption">
@@ -107,6 +115,37 @@
             <p class="empty-text" data-empty-text>Проверьте написание или сбросьте фильтры.</p>
             <button class="button button-primary" type="button" data-empty-action>Сбросить фильтры</button>
           </div>
+        </div>
+      </section>
+
+      <section class="familiars layout" id="familiars" aria-labelledby="familiars-heading">
+        <div class="familiar-heading">
+          <h2 class="section-title" id="familiars-heading">Фамильяры лавки</h2>
+          <p>У каждого свой характер и своё заклинание.</p>
+        </div>
+        <div class="familiar-grid">
+          <article class="familiar" data-familiar="fire">
+            <div class="familiar-copy">
+              <h3>Огненный феникс</h3>
+              <p>Взмах крыльев рассыпает тёплые искры.</p>
+              <button class="familiar-cast" type="button" data-familiar-cast><span aria-hidden="true">✦</span> Зажечь перья</button>
+            </div>
+            <div class="familiar-art" aria-hidden="true">
+              <span class="familiar-burst"></span>
+              <img src="./assets/familiars/phoenix.svg" alt="" width="320" height="250">
+            </div>
+          </article>
+          <article class="familiar" data-familiar="moon">
+            <div class="familiar-copy">
+              <h3>Лунный дракон</h3>
+              <p>Выдыхает холодное лунное сияние.</p>
+              <button class="familiar-cast" type="button" data-familiar-cast><span aria-hidden="true">✧</span> Позвать дракона</button>
+            </div>
+            <div class="familiar-art" aria-hidden="true">
+              <span class="familiar-burst"></span>
+              <img src="./assets/familiars/moon-dragon.svg" alt="" width="320" height="250">
+            </div>
+          </article>
         </div>
       </section>
     </div>
@@ -180,6 +219,7 @@
           <div class="product-art model-stage">
             <img class="product-image" data-testid="product-image" width="160" height="160" loading="lazy" decoding="async" alt="">
             <span class="product-fallback" aria-hidden="true"></span>
+            <button class="model-spell" type="button" data-model-spell aria-label="Оживить модель"><span aria-hidden="true">✦</span></button>
             <span class="model-note" aria-hidden="true">↔ 3D</span>
           </div>
           <figcaption class="product-caption">
